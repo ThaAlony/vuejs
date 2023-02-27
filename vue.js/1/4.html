@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <title>
+
+        </title>
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+            input { 
+                margin: 10px;
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="app" v-cloak>  
+           
+
+            <form-pazza>
+
+            </form-pazza>
+        </div>
+
+        <script src="https://unpkg.com/vue@3"></script>
+        <script>
+            let app = Vue.createApp({
+            })
+
+            app.component("form-pazza", {
+                template: `
+                    <form @submit="handleSubmit()">
+
+                        <h1>{{ title }}</h1>
+
+
+                        <input-pazzo v-bind:label="emailLabel" v-model="email"></input-pazzo>
+
+
+                        <input-pazzo :label="passwordLabel" v-model="password"> </input-pazzo> <!-- v-bind: e : sono la stessa cosa -->
+
+                        <input type="submit" value="er submitter">
+
+
+                        <p v-if="isSubmitted">SUBMITTANDOOOO</p>
+                    </form>
+                `,
+                components: ['input-pazzo'],
+                data() {
+                    return {
+                        isSubmitted: false,
+                        title: "Form Super pazza???",
+                        email: "",
+                        password: "",
+                        emailLabel: "Email",
+                        passwordLabel: "Password"
+                    }
+                },
+                methods: {
+                    handleSubmit() {
+                        this.isSubmitted = true
+                        console.log(this.email + " " + this.password)
+                    }
+                }
+            })
+
+            app.component("input-pazzo", {
+                template: `
+                    <label>
+                        {{ label }}
+                        <input type="text" v-model="inputValue">
+                    </label>
+                `,
+                props: ['label', 'modelValue'],  
+                computed: {
+                    inputValue: {    // ogni volta che inputValue cambia vengono fatte ste robe
+                        get() {
+                            return this.modelValue
+                        },
+                        set(value) {
+                            console.log(value)
+                            this.$emit('update:modelValue', value)          // $emit = emitto un evento che tutti i componenti possono vedere 
+                                    //  update è un evento di Vuejs
+                                    // bisogna usare gli eventi perché i props sono READONLY
+                        }
+                    }
+                }
+            })
+
+            app.mount('#app')
+        </script>
+    </body>
+</html>

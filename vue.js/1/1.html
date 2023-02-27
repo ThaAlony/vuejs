@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>
+
+        </title>
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="app" v-cloak>  <!-- v-cloak = attributo che rimane solo quando vue non è pronto -->
+            NON PREMERE INVIO PER NESSUN MOTIVO! <hr>
+             {{ text }} <br>
+            <input @keyup.enter="crazy()" v-model="text" /> <!-- keyup è un evento  il .enter è un event modifier (assurdo ve?) -->
+
+            <hr>
+
+            <button @click="onChrisi()">{{ btnText }} </button> <!-- v:on e @ sono la stessa cosa -->
+            <p v-if="isChrisi"> {{ chrisi }}</p>
+        </div>
+
+        <script src="https://unpkg.com/vue@3"></script>
+        <script>
+            let app = Vue.createApp({
+                data: function() {
+                    return {
+                        text: "yoooo",
+                        chrisi: "CREIZINEEGHIWAYGHI",
+                        isChrisi: false,
+                        btnText: "SHOWA CRAZY"
+                    }
+                },
+                methods: {
+                    onChrisi() {
+                        this.isChrisi = !this.isChrisi
+                        if(this.isChrisi == true) this.btnText = "NASCONDI CRAZY"
+                        else this.btnText = "SHOWA CRAZY"
+                    },
+                    crazy() {
+                        this.text="CREEEEEEEEEEEEEEEEEEISI"
+                    }
+            }
+            })
+            app.mount('#app')
+        </script>
+    </body>
+</html>

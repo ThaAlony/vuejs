@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>
+
+        </title>
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+            .box {
+                background-color: blueviolet;
+                height: 100px;
+                width: 100px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="app" v-cloak >  
+           
+            <button @click="onToggleBox()">Attiva/Disattiva Scatola Gigante</button>
+            <hr>
+
+            <div style="justify-content: center; display: flex;">
+                <box-pazza v-if="isVisible"></box-pazza>
+            </div>
+                
+          
+           
+        </div>
+
+        <script src="https://unpkg.com/vue@3"></script>
+        <script>
+            let app = Vue.createApp({
+                data() {
+                    return {
+                        isVisible: false
+                    }
+                },
+                methods: {
+                    onToggleBox() {
+                        this.isVisible = !this.isVisible
+                    }
+                },
+                updated() {
+                    console.log('AGGIORNATO BOZOOO')  
+                    // cambiamo la variabile isVisible QUINDI updated lifecycle hook
+                }
+            })
+
+            app.component('box-pazza', {
+                template: `
+                    <div class="box"></div>
+                `,
+                created() {
+                    console.log("CREATO")
+                },
+                mounted() {
+                    console.log("MONTANTO")
+                },
+                unmounted() {
+                    console.log("SMONTATO UNLUCKY RIP BOZO")
+                }
+            })
+
+            app.mount('#app')
+        </script>
+    </body>
+</html>

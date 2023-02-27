@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Basics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/vue@next" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Vue Events</h1>
+    </header>
+    <section id="events">
+      <h2>Events in Action</h2>
+
+      <button @click="add(1)">Add</button>
+      <button @click="remove(1)">Remove</button>
+      <button @click="add(3)" >Add 3</button>
+      <button @click="remove(3)">Remove 3</button>
+
+      <p v-once>Il counter è iniziato a: {{ counter }}</p>  <!-- v-once è cosi broken che sta roba non si può più cambiare -->
+
+      <p>Result: {{ counter }}</p>
+
+      <!-- 
+      <input type="text" v-bind:value="nome" v-on:input="setName($event)" v-on:keyup.enter="confirmName"> 
+                          // Si, puoi avere più eventi in un unico tag HTML 
+                                            // puoi anche non mettere $event SE non usi nessun parametro 
+                                                     // il keyup.enter è cosi broken che se non sei sull'input non te lo conta cioe holy shit che figo 
+                                                    -->
+
+      <input type="text" v-model="nome" v-on:keyup.enter="confirmName"> 
+      <!-- praticamente v-model fa tutto quello che fa v-bind e v-on:input -->
+      <!-- STA ROBA si chiama two Way Binding ( perché è sia Data Binding che Event Binding ) assurdo ve?-->
+      
+      
+      <button @click="reset">Reset Input</button>
+
+      <p>Nome: {{outputFullname() }}</p> <!-- STA roba viene runnata ogni volta che cambia
+                                           qualcosa nel DOM per cui non è good ed infatti usiamo computed -->
+      <p>Nome: {{ fullname }}</p>   <!-- SENZA le () perché ok che è un metodo ma lo dobbiamo usare come se fosse data -->   
+    
+      <form v-on:submit.prevent="submitForm"> <!-- prevent = toglie l'evento di default (nel caso della form toglie l'action)-->
+        <input type="text">
+        <button>Sign Up</button>
+      </form>
+    </section>
+  </body>
+</html>

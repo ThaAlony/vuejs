@@ -1,0 +1,112 @@
+<html>
+    <head>
+        <title>
+
+        </title>
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+            input { 
+                margin: 10px;
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="app" v-cloak>  
+           
+
+            <form-pazza>
+
+            </form-pazza>
+        </div>
+
+        <script src="https://unpkg.com/vue@3"></script>
+        <script>
+            let app = Vue.createApp({
+            })
+
+            app.component("form-pazza", {
+                template: `
+                    <form @submit="handleSubmit()">
+
+                        <h1>{{ title }}</h1>
+
+
+
+                        <p v-for="str in inputs" :key="str">{{ str }}</p>    <!-- LOOP PAZZO,  c'è bisogno di una key unica ( in questo caso usiamo la value effettiva come key) -->
+                        
+                        <input-pazzo 
+                            v-for="(input, i) in inputs"
+                            :key="i"
+                            v-model="input.value"
+                            :label="input.label"
+                            :type="input.type"
+                        > </input-pazzo>
+                         <!-- in questo caso usiamo l'indice i come key -->
+                        
+                        
+                        
+                      
+
+                        <input type="submit" value="er submitter">
+
+
+                        <p v-if="isSubmitted">SUBMITTANDOOOO</p>
+                    </form>
+                `,
+                components: ['input-pazzo'],
+                data() {
+                    return {
+                        isSubmitted: false,
+                        title: "Form Super pazza???",
+                        inputs: [
+                            {
+                                label: "Email",
+                                value: '',
+                                type: 'email'
+                            },
+                            {
+                                label: "Password",
+                                value: '',
+                                type: 'password'
+                            }
+                            
+                        ]
+                    }
+                },
+                methods: {
+                    handleSubmit() {
+                        this.isSubmitted = true
+                        console.log(this.email + " " + this.password)
+                    }
+                }
+            })
+
+            app.component("input-pazzo", {
+                template: `
+                    <label>
+                        {{ label }}
+                        <input :type="type" v-model="inputValue">
+                    </label>
+                `,
+                props: ['label', 'type', 'modelValue'],  
+                computed: {
+                    inputValue: {    
+                        get() {
+                            return this.modelValue
+                        },
+                        set(value) {
+                            console.log(value)
+                            this.$emit('update:modelValue', value)       
+                        }
+                    }
+                }
+            })
+
+            app.mount('#app')
+        </script>
+    </body>
+</html>

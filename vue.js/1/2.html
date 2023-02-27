@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>
+
+        </title>
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+            input { 
+                margin: 10px;
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="app" v-cloak>  
+           
+
+            <form-pazza>
+asd
+            </form-pazza>
+        </div>
+
+        <script src="https://unpkg.com/vue@3"></script>
+        <script>
+            let app = Vue.createApp({
+                data() {
+                    return {
+                       
+                    }
+                },
+                methods: {
+                    
+            }
+            })
+
+            app.component("form-pazza", {
+                template: `
+                    <form @submit="handleSubmit()">
+                        <h1>{{ title }}</h1>
+                        <input type="email" v-model="email">
+                        <input type="password" v-model="password">
+
+                        <input type="submit" value="er submitter">
+                        <p v-if="isSubmitted">SUBMITTANDOOOO</p>
+                    </form>
+                `,
+                data() {
+                    return {
+                        isSubmitted: false,
+                        title: "Form Super pazza???",
+                        email: "",
+                        password: ""
+                    }
+                },
+                methods: {
+                    handleSubmit() {
+                        this.isSubmitted = true
+                        console.log(this.email + " " + this.password)
+                    }
+                }
+            })
+
+            app.mount('#app')
+        </script>
+    </body>
+</html>
