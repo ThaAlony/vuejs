@@ -9,6 +9,7 @@
         :role="member.role"
       ></user-item>
     </ul>
+    <router-link to="/teams/t2">Vai al team number ciu</router-link>
   </section>
 </template>
 
@@ -21,13 +22,40 @@ export default {
   },
   data() {
     return {
-      teamName: 'Test',
+      teamName: '',
       members: [
-        { id: 'u1', fullName: 'Max Schwarz', role: 'Engineer' },
-        { id: 'u2', fullName: 'Max Schwarz', role: 'Engineer' },
-      ],
+    ]
     };
   },
+  inject: ['users', 'teams'],
+  props: ['teamId'],
+  methods: {
+    loadTeamMember(id) {
+    const selectedTeam = this.teams.find(team => team.id == id)
+    const members = selectedTeam.members
+    const selectedMembers = []
+    for (const m of members) {
+      const selectedUser = this.users.find(u => u.id == m)
+      selectedMembers.push(selectedUser)
+    }
+    this.teamName = selectedTeam.name  
+    this.members = selectedMembers
+    }
+  },
+  created() {       // ci sono i dati ma ancora nulla di visivo
+    this.loadTeamMember(this.teamId)
+    console.log(this.$route.query)// er query parameter!
+  },
+  beforeRouteUpdate(to, from, next) {  // praticamente quando riutilizzi questo component, detto in poche parole in questo caso
+                          // è quando sei su teams/1 e vai su teams/2 quindi i componenti vengono ricclati 
+    //this.loadTeamMember(to.params.teamId) // praticamente sta roba è tipo il watch ma solo per le route quindi STICAZ
+    next()
+  },
+  watch: {
+    teamId(v) {
+      this.loadTeamMember(v)
+    }
+  }
 };
 </script>
 

@@ -2,13 +2,30 @@
   <li>
     <h3>{{ name }}</h3>
     <div class="team-members">{{ memberCount }} Members</div>
-    <a href="#">View Members</a>
+    <RouterLink :to="teamMembersLink">View Members</RouterLink>
   </li>
 </template>
 
 <script>
+import { RouterLink } from 'vue-router';
+
 export default {
-  props: ['name', 'memberCount'],
+    props: ["id", "name", "memberCount"],
+    components: { RouterLink },
+    computed: {
+      teamMembersLink() {
+        //return '/teams/'+this.id
+        return {    // il bro può usare anche oggetti oltre a stringhe!
+          name: 'team-members',          // vantaggio? non usi il path quindi se in futuro lo vuoi cambiare è stra easy 
+          params: {
+            teamId: this.id
+          },
+          query: {            // BROO query parameter!!! parametri che non sono definiti in ruoter praticament
+            sort: 'asc'
+          }
+        }
+      }
+    }
 };
 </script>
 
