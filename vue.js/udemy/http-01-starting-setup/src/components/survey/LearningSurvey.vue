@@ -29,6 +29,10 @@
         <p
           v-if="invalidInput"
         >One or more input fields are invalid. Please check your provided data.</p>
+        <div v-if="error">
+        <h1> {{ error }} </h1>
+        <img style="height: 100px;" src="https://s.keepmeme.com/files/en_posts/20201109/what-is-impostor-s-favorite-computer-brand-asus.jpg">
+      </div>
         <div>
           <base-button>Submit</base-button>
         </div>
@@ -44,9 +48,10 @@ export default {
       enteredName: '',
       chosenRating: null,
       invalidInput: false,
+      error: null
     };
   },
-  emits: ['survey-submit'],
+  /// emits: ['survey-submit'],
   methods: {
     submitSurvey() {
       if (this.enteredName === '' || !this.chosenRating) {
@@ -55,10 +60,34 @@ export default {
       }
       this.invalidInput = false;
 
-      this.$emit('survey-submit', {
-        userName: this.enteredName,
-        rating: this.chosenRating,
-      });
+      // this.$emit('survey-submit', {
+      //   userName: this.enteredName,
+      //   rating: this.chosenRating,
+      // });
+
+      this.error = null
+      fetch('https://vue-http-demo-be565-default-rtdb.europe-west1.firebasedatabase.app/surveys.json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+         body: JSON.stringify({
+           name: this.enteredName,
+           rating: this.chosenRating
+         })
+
+        // body: {       // ERRORE 400 ( bad request)!! ( perché non è un JSON)
+        //   name: this.enteredName,  
+        //   rating: this.chosenRating
+        // }
+        
+      }).then((res) => {  // il 400 è tecnicamente una RISPOSTa e non un ERORRE
+        if(!res.ok) {
+          throw new Error('Errore sus')
+        }
+      }).catch((err) => {
+        this.error = err.message
+      })
 
       this.enteredName = '';
       this.chosenRating = null;
