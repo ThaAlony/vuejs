@@ -1,12 +1,15 @@
 <template>
-  <div class="backdrop" @click="$emit('close')"></div>
-  <dialog open>
+  <div v-if="open" class="backdrop" @click="$emit('close')"></div>
+  <Transition name="modal">
+    <dialog open v-if="open">
     <slot></slot>
   </dialog>
+  </Transition>
 </template>
 
 <script>
 export default {
+  props: ['open'],
   emits: ['close'],
 };
 </script>
