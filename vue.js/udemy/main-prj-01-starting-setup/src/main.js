@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import { createApp, defineAsyncComponent } from 'vue';
 
 import App from './App'
 
@@ -9,7 +9,10 @@ import BaseCard from './components/UI/BaseCard'
 import BaseButton from './components/UI/BaseButton'
 import BaseBadge from './components/UI/BaseBadge'
 import BaseSpinner from './components/UI/BaseSpinner'
-import BaseDialog from './components/UI/BaseDialog'
+//import BaseDialog from './components/UI/BaseDialog'
+
+ // ASYBNC COMPONENT! cioe? quando mi serve lo carico cosi l'utente non scarica tutta sta roba nel sito
+const BaseDialog = defineAsyncComponent(() => import('./components/UI/BaseDialog'));
 
 const app = createApp(App)
 
