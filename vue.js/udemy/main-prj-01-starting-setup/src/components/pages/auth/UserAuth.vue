@@ -1,5 +1,11 @@
 <template>
+    
     <div>
+        <base-dialog  :show="!!error" title="Errore!!!" @close="handleError" >
+        <p>{{error}}</p>
+        </base-dialog>
+        <base-dialog fixed title="Aspe aspe" :show="isLoading"><p>Un attimo fratm.....</p>
+    <base-spinner></base-spinner></base-dialog>
         <base-card>
         <form @submit.prevent="submitForm">
           
@@ -26,7 +32,9 @@ export default{
             email: '',
             password: '',
             isValid: true,
-            mode: 'login'
+            mode: 'login',
+            isLoading: false,
+            error: null
         }
     },
     computed: {
@@ -42,26 +50,41 @@ export default{
         }
     },
     methods: {
-        submitForm() {
+        async submitForm() {
             this.isValid = true
             if(this.email == '' || !this.email.includes('@') || this.password < 6) {
                 this.isValid = false
                 return
             }
 
-            if (this.mode == 'login') {
-                this.$store.dispatch('login')
+            this.isLoading = true
+
+            try {
+                if (this.mode == 'login') {
+                await this.$store.dispatch('login', {
+                    email: this.email,
+                    password: this.password
+                })
             } else {
-                this.$store.dispatch('signup', {
+                await this.$store.dispatch('signup', {
                     email: this.email,
                     password: this.password
                 })
             }
+            const redUrl = '/'+ (this.$route.query.redirect || 'coaches' )
+            this.$router.replace(redUrl)
+            } catch(e) {this.error = e.message || 'ERRORE PAZZO'}
+
+            this.isLoading = false
         },
         switchAuthMode() {
             console.log(this.mode)
             if (this.mode == 'login') return this.mode = 'signup'
             if (this.mode == 'signup') return  this.mode = 'login'
+        },
+        handleError() {
+            console.log("A")
+            this.error=false
         }
     }
 

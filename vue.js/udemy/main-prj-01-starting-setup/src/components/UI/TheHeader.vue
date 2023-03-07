@@ -7,8 +7,14 @@
         <li>
             <router-link to="/coaches">Tutti i coccies</router-link>
         </li>
-        <li>
+        <li v-if="isLogged">
             <router-link to="/requests">Rikieste</router-link>
+        </li>
+        <li v-else>
+          <router-link to="/auth">Loggati fratm</router-link>
+        </li>
+        <li v-if="isLogged">
+          <base-button @click="logout">Logout!</base-button>
         </li>
     </ul>
 </nav>
@@ -16,7 +22,19 @@
 </template>
 
 <script>
-
+export default {
+  computed: {
+    isLogged() {
+      return this.$store.getters.isAuthenticated
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+      this.$router.replace('/coaches')
+    }
+  }
+}
 </script>
 
 <style scoped>

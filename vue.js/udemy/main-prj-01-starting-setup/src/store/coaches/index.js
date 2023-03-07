@@ -47,8 +47,9 @@ export default {
           areas: payload.areas
         }
 
+        const token = context.rootGetters.token
             // await = la variabile viene creata quando arriva la risposta al DB lets go!
-        const res = await fetch(`https://vue-http-demo-be565-default-rtdb.europe-west1.firebasedatabase.app/coaches/${id}.json`, {
+        const res = await fetch(`https://vue-http-demo-be565-default-rtdb.europe-west1.firebasedatabase.app/coaches/${id}.json?auth=${token}`, {
           method: 'PUT',
           body: JSON.stringify(coach)
         })

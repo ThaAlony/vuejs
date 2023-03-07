@@ -38,8 +38,8 @@ export default {
         },
         async fetchRequests(context) {
             const coachId = context.rootGetters.userId
-
-            const res = await fetch(`https://vue-http-demo-be565-default-rtdb.europe-west1.firebasedatabase.app/requests/${coachId}.json`)
+            const token = context.rootGetters.token
+            const res = await fetch(`https://vue-http-demo-be565-default-rtdb.europe-west1.firebasedatabase.app/requests/${coachId}.json?auth=${token}`)
            const resData = await res.json()
 
            if (!res.ok) {
