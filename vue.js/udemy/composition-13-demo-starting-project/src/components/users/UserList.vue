@@ -20,18 +20,37 @@
 
 <script>
 import UserItem from './UserItem.vue';
+import { ref, computed } from 'vue'
 
 export default {
   components: {
     UserItem,
   },
   props: ['users'],
-  data() {
+  setup() {
+
+    const enteredSearchTerm = ref('')
+    const activeSearchTerm=ref('')
+
+    function updateSearch(val) {
+      this.enteredSearchTerm = val;
+    }
+
+    function sort(mode) {
+      this.sorting = mode;
+    }
+
+
+
+
+
+    const sorting= ref(null)
+
     return {
-      enteredSearchTerm: '',
-      activeSearchTerm: '',
-      sorting: null,
-    };
+      enteredSearchTerm,
+      activeSearchTerm,
+      sorting
+    }
   },
   computed: {
     availableUsers() {
@@ -60,14 +79,6 @@ export default {
           return 1;
         }
       });
-    },
-  },
-  methods: {
-    updateSearch(val) {
-      this.enteredSearchTerm = val;
-    },
-    sort(mode) {
-      this.sorting = mode;
     },
   },
   watch: {
