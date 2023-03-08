@@ -1,5 +1,7 @@
 <template>
   <section class="container">
+    <UserData :userName="user.name" :age="user.age"></UserData>
+    <p>-----------------</p>
     <h2>{{ user.name }}</h2>
     <h2>{{  user.age }}</h2>
     <button @click="changeAge">Change Age</button>
@@ -22,9 +24,13 @@
 </template>
 
 <script>
-import {  ref, reactive, computed, watch } from 'vue'
+import {  ref, reactive, computed, watch, provide } from 'vue'
+import UserData from './components/UserData.vue';
 
 export default {
+  components: { // NO FRA MA E' OPT- ah no.. questo va bene anche in composition!
+    UserData
+  },
   setup() {
 
     const user = reactive({
@@ -74,6 +80,8 @@ export default {
       testValue.value = testInput.value.value // ecco come si fa! praticamnte il primo value è un pointer all'input tag, il secondo value invece è la value del tag, niente di spaventoso!
     }
 
+
+    provide('variabile', 'ciao')
     return{
       user: user,
       changeAge: setAge,  // e cosi passiamo i methods!
